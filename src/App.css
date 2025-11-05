@@ -1,0 +1,186 @@
+/* App.css */
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background: radial-gradient(circle at top, #1e1645 0%, #3b2270 40%, #ffd67a 120%);
+  overflow: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: transparent
+    url("https://www.transparenttextures.com/patterns/stardust.png") repeat;
+  opacity: 0.6;
+  animation: twinkle 8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30vh;
+  background: linear-gradient(to top, rgba(255, 220, 150, 0.2), transparent);
+  pointer-events: none;
+}
+
+.firefly {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #ffd95e 0%, transparent 60%);
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: fireflyMove 8s ease-in-out infinite;
+}
+
+.sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #fff9c4 0%, #ffe57f 40%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.9;
+  transform: translate(-50%, -50%) scale(0);
+  animation: sparkleFloat 1.8s ease-out forwards;
+  filter: blur(1px);
+  mix-blend-mode: screen;
+}
+
+.corner-vine {
+  position: fixed;
+  width: 180px;
+  opacity: 0.7;
+  z-index: 2;
+  animation: vineSway 6s ease-in-out infinite alternate;
+  pointer-events: none; /* ensures vines don't block clicks */
+  filter: drop-shadow(0 0 10px rgba(255, 220, 160, 0.4));
+}
+
+@keyframes vineSway {
+  from { transform: rotate(1deg) translateY(0); }
+  to { transform: rotate(-2deg) translateY(-6px); }
+}
+
+
+@keyframes shimmerDust {
+  from { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+  to { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+.dust {
+  position: fixed;
+  top: 100%;
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  background: radial-gradient(circle, rgba(255,255,200,0.8), transparent 70%);
+  border-radius: 50%;
+  animation: shimmerDust 8s linear infinite;
+  pointer-events: none;
+}
+
+
+@keyframes sparkleFloat {
+  0% {
+    transform: translate(var(--tx-start), var(--ty-start)) scale(0.5) rotate(0deg);
+    opacity: 1;
+  }
+  30% {
+    transform: translate(var(--tx-mid), var(--ty-mid)) scale(1.1) rotate(90deg);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(var(--tx-end), var(--ty-end)) scale(0.2) rotate(270deg);
+    opacity: 0;
+  }
+}
+
+
+
+
+
+@keyframes fireflyMove {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.5; }
+  50% { transform: translateY(-60px) translateX(40px); opacity: 1; }
+}
+
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(255, 210, 130, 0.4); }
+  50% { box-shadow: 0 0 45px rgba(255, 230, 150, 0.8); }
+}
+.profile-card {
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+
+@keyframes twinkle {
+  0% { opacity: 0.2; }
+  100% { opacity: 0.4; }
+}
+
+/* Floating Lanterns */
+.lantern-container {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 10;
+}
+
+
+/* Lanterns */
+.lantern {
+  position: absolute;
+  width: 50px;
+  height: 70px;
+  background: radial-gradient(circle at 50% 30%, #fff7b3, #ffcc66 60%, #d4a33d 100%);
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(255, 220, 150, 0.8);
+  opacity: 0.85;
+  animation: floatLantern 15s ease-in-out infinite;
+  transform: translateY(100vh);
+  filter: drop-shadow(0 0 12px #ffd67a);
+  opacity: 0.9;
+}
+
+
+@keyframes floatLantern {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  50% {
+    transform: translateY(50vh) translateX(15px) rotate(2deg);
+  }
+  100% {
+    transform: translateY(-10vh) translateX(-10px) rotate(-2deg);
+    opacity: 0;
+  }
+}
+
+
+/* Fade-in animation for text */
+.fade-in {
+  animation: fadeIn 2s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

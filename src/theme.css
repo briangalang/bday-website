@@ -1,0 +1,23 @@
+:root {
+  /* Tangled color palette */
+  --sunpillar-1: hsl(45, 100%, 67%);
+  --sunpillar-2: hsl(299, 64%, 75%);
+  --sunpillar-3: hsl(270, 63%, 68%);
+  --sunpillar-4: hsl(220, 70%, 72%);
+  --sunpillar-5: hsl(26, 100%, 78%);
+  --sunpillar-6: hsl(300, 75%, 83%);
+
+  /* Apply the palette to card gradients 🌟 */
+  --behind-gradient: radial-gradient(
+    circle at var(--pointer-x) var(--pointer-y),
+    var(--sunpillar-1),
+    var(--sunpillar-3),
+    var(--sunpillar-4)
+  );
+
+  --inner-gradient: linear-gradient(
+    145deg,
+    var(--sunpillar-2),
+    var(--sunpillar-5)
+  );
+}
