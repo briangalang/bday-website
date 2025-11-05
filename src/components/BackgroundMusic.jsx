@@ -1,25 +1,33 @@
-import { useEffect, useRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 
-export default function BackgroundMusic({ src, volume = 0.5 }) {
-  const audioRef = useRef(null);
+const BackgroundMusic = forwardRef(({ src, volume = 0.5 }, ref) => {
+  const audioRef = ref || useRef(null);
 
+  // Try autoplay on mount, fallback to user interaction
   useEffect(() => {
-    const audio = new Audio(src);
-    audio.loop = true;
-    audio.volume = volume;
-    audioRef.current = audio;
-
-    // Auto play when user interacts
     const playAudio = () => {
-      audio.play().catch(() => {}); // prevent browser errors
-      document.removeEventListener("click", playAudio);
+      if (audioRef.current) {
+        audioRef.current.volume = volume;
+        audioRef.current.play().catch(() => {
+          // Autoplay blocked, wait for user interaction
+          console.log("Autoplay blocked, waiting for user interaction...");
+        });
+      }
     };
-    document.addEventListener("click", playAudio);
+
+    // Try autoplay immediately
+    playAudio();
+
+    // Add click listener for fallback
+    const handleUserInteraction = () => playAudio();
+    window.addEventListener("click", handleUserInteraction, { once: true });
 
     return () => {
-      audio.pause();
+      window.removeEventListener("click", handleUserInteraction);
     };
-  }, [src, volume]);
+  }, [volume]);
 
-  return null; // No visible UI
-}
+  return <audio ref={audioRef} src={src} loop />;
+});
+
+export default BackgroundMusic;

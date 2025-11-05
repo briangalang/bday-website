@@ -1,15 +1,31 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./App.css";
 import ProfileCard from "./components/ProfileCard";
 import profileImg from "./assets/rizzi/profile.png";
 import SplashCursor from "./components/SplashCursor";
 import Dock from "./components/Dock";
 import BackgroundMusic from "./components/BackgroundMusic";
+import videoMessage from "./assets/message/video-message.mp4";
+import TiltedCard from "./components/TiltedCard";
+import MusicCarousel from "./components/MusicCarousel";
 
 // 🌸 Tangled-style icons
 import { FaEnvelope, FaMusic, FaImages, FaGift } from "react-icons/fa";
 
 function App() {
+  const [showMessageModal, setShowMessageModal] = useState(false);
+  const [showMusicModal, setShowMusicModal] = useState(false);
+  const musicRef = useRef(null);
+
+  useEffect(() => {
+    if (!musicRef.current) return;
+    if (showMessageModal) {
+      musicRef.current.pause();
+    } else {
+      musicRef.current.play();
+    }
+  }, [showMessageModal]);
+
   // 🏮 Floating lanterns animation
   useEffect(() => {
     const lanternCount = 12;
@@ -124,12 +140,12 @@ function App() {
     {
       icon: <FaEnvelope size={20} className="text-[#ffd67a]" />,
       label: "Message",
-      onClick: () => alert("💌 Opening your birthday message..."),
+      onClick: () => setShowMessageModal(true),
     },
     {
       icon: <FaMusic size={20} className="text-[#f4c26b]" />,
       label: "Music",
-      onClick: () => alert("🎵 Playing your song..."),
+      onClick: () => setShowMusicModal(true),
     },
     {
       icon: <FaImages size={20} className="text-[#e2b257]" />,
@@ -143,12 +159,41 @@ function App() {
     },
   ];
 
+  const MUSIC_TRACKS = [
+    {
+      id: 1,
+      title: "Be With You",
+      artist: "The Ridleys",
+      cover: "/assets/music/cover1.jpg",
+      audio: "/assets/music/song1.mp3",
+    },
+    {
+      id: 2,
+      title: "Nothing",
+      artist: "Bruno Major",
+      cover: "/assets/music/cover2.jpg",
+      audio: "/assets/music/song2.mp3",
+    },
+    {
+      id: 3,
+      title: "Ikaw at Ako",
+      artist: "Johnoy Danao",
+      cover: "/assets/music/cover3.jpg",
+      audio: "/assets/music/song3.mp3",
+    },
+  ];
+
   // 🎂 Main Page Layout
   return (
     <>
       <SplashCursor />
-      <div className="flex items-center justify-center min-h-screen">
-        <BackgroundMusic src="/isee-the-light.mp3" volume={0.6} />
+      {/* Main content */}
+      <div className="relative z-20 flex items-center justify-center min-h-screen">
+        <BackgroundMusic
+          src="/isee-the-light.mp3"
+          volume={0.6}
+          ref={musicRef}
+        />
         <ProfileCard
           name="Rizzi Salunga"
           title="Birthday Girl"
@@ -169,7 +214,54 @@ function App() {
         panelHeight={68}
         baseItemSize={50}
         magnification={70}
+        className="z-20"
       />
+      {/* 🎬 Tilted Video Modal */}
+      {showMessageModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 p-4">
+          <div className="relative pointer-events-auto">
+            <button
+              className="absolute top-2 right-2 text-white text-xl font-bold z-50"
+              onClick={() => setShowMessageModal(false)}
+            >
+              ✖
+            </button>
+            <TiltedCard
+              videoSrc={videoMessage}
+              containerHeight="400px"
+              containerWidth="400px"
+              mediaHeight="400px"
+              mediaWidth="400px"
+              rotateAmplitude={12}
+              scaleOnHover={1.2}
+              displayOverlayContent={false}
+              overlayContent={
+                <p className="text-yellow-300 text-lg text-center">
+                  💖 Happy Birthday!
+                </p>
+              }
+            />
+          </div>
+        </div>
+      )}
+      {/* 🎶 Music Modal */}
+      {showMusicModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 p-4">
+          <div className="relative pointer-events-auto w-full max-w-xl">
+            <button
+              className="absolute top-2 right-2 text-white text-xl font-bold z-50"
+              onClick={() => setShowMusicModal(false)}
+            >
+              ✖
+            </button>
+            <MusicCarousel
+              tracks={MUSIC_TRACKS}
+              baseWidth={300}
+              bgMusicRef={musicRef}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 }
