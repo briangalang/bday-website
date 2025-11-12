@@ -5,7 +5,7 @@ import profileImg from "./assets/rizzi/profile.png";
 import SplashCursor from "./components/SplashCursor";
 import Dock from "./components/Dock";
 import BackgroundMusic from "./components/BackgroundMusic";
-import videoMessage from "./assets/message/video-message.mp4";
+import videoMessage from "./assets/message/BDAY.mp4";
 import TiltedCard from "./components/TiltedCard";
 import MusicCarousel from "./components/MusicCarousel";
 
@@ -148,14 +148,9 @@ function App() {
       onClick: () => setShowMusicModal(true),
     },
     {
-      icon: <FaImages size={20} className="text-[#e2b257]" />,
-      label: "Gallery",
-      onClick: () => alert("🖼️ Opening your gallery..."),
-    },
-    {
       icon: <FaGift size={20} className="text-[#b78cff]" />,
       label: "Surprise",
-      onClick: () => alert("🎁 Surprise! ✨"),
+      onClick: () => alert("🎁 Surprise! Look Behind you. ✨"),
     },
   ];
 
@@ -180,6 +175,20 @@ function App() {
       artist: "Johnoy Danao",
       cover: "/assets/music/cover3.jpg",
       audio: "/assets/music/song3.mp3",
+    },
+    {
+      id: 4,
+      title: "Izzir",
+      artist: "Brian Galang",
+      cover: "/assets/music/cover4.jpg",
+      audio: "/assets/music/izzir.mp3",
+    },
+    {
+      id: 5,
+      title: "Rian",
+      artist: "Brian Galang",
+      cover: "/assets/music/cover4.jpg",
+      audio: "/assets/music/rian.mp3",
     },
   ];
 
@@ -218,32 +227,22 @@ function App() {
       />
       {/* 🎬 Tilted Video Modal */}
       {showMessageModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 p-4">
-          <div className="relative pointer-events-auto">
-            <button
-              className="absolute top-2 right-2 text-white text-xl font-bold z-50"
-              onClick={() => setShowMessageModal(false)}
-            >
-              ✖
-            </button>
-            <TiltedCard
-              videoSrc={videoMessage}
-              containerHeight="400px"
-              containerWidth="400px"
-              mediaHeight="400px"
-              mediaWidth="400px"
-              rotateAmplitude={12}
-              scaleOnHover={1.2}
-              displayOverlayContent={false}
-              overlayContent={
-                <p className="text-yellow-300 text-lg text-center">
-                  💖 Happy Birthday!
-                </p>
-              }
-            />
-          </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90">
+          <video
+            src={videoMessage}
+            autoPlay
+            controls
+            className="w-full h-full object-contain"
+          />
+          <button
+            onClick={() => setShowMessageModal(false)}
+            className="absolute top-4 right-6 text-white text-3xl font-bold hover:text-yellow-300 transition"
+          >
+            ✕
+          </button>
         </div>
       )}
+
       {/* 🎶 Music Modal */}
       {showMusicModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 p-4">
