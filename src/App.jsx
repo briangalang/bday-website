@@ -5,7 +5,6 @@ import profileImg from "./assets/rizzi/profile.png";
 import SplashCursor from "./components/SplashCursor";
 import Dock from "./components/Dock";
 import BackgroundMusic from "./components/BackgroundMusic";
-import videoMessage from "./assets/message/BDAY.mp4";
 import TiltedCard from "./components/TiltedCard";
 import MusicCarousel from "./components/MusicCarousel";
 
@@ -229,7 +228,7 @@ function App() {
       {showMessageModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90">
           <video
-            src={videoMessage}
+            src="https://drive.google.com/uc?export=download&id=1belVTMrRr7I_bMoGKduby0YZiJLzy-xr"
             autoPlay
             controls
             className="w-full h-full object-contain"
