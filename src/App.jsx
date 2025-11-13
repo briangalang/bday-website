@@ -139,7 +139,11 @@ function App() {
     {
       icon: <FaEnvelope size={20} className="text-[#ffd67a]" />,
       label: "Message",
-      onClick: () => setShowMessageModal(true),
+      onClick: () =>
+        window.open(
+          "https://drive.google.com/file/d/1belVTMrRr7I_bMoGKduby0YZiJLzy-xr/view?usp=sharing",
+          "_blank"
+        ),
     },
     {
       icon: <FaMusic size={20} className="text-[#f4c26b]" />,
