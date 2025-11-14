@@ -1,33 +1,50 @@
 import { forwardRef, useEffect, useRef } from "react";
 
 const BackgroundMusic = forwardRef(({ src, volume = 0.5 }, ref) => {
-  const audioRef = ref || useRef(null);
+  const internalRef = useRef(null);
 
-  // Try autoplay on mount, fallback to user interaction
+  // Ensure forwarded ref points to audio element
   useEffect(() => {
-    const playAudio = () => {
-      if (audioRef.current) {
-        audioRef.current.volume = volume;
-        audioRef.current.play().catch(() => {
-          // Autoplay blocked, wait for user interaction
-          console.log("Autoplay blocked, waiting for user interaction...");
-        });
+    if (ref) {
+      if (typeof ref === "function") {
+        ref(internalRef.current);
+      } else {
+        ref.current = internalRef.current;
       }
+    }
+  }, [ref]);
+
+  useEffect(() => {
+    if (!internalRef.current) return;
+    const audio = internalRef.current;
+    audio.volume = volume;
+
+    // Attempt autoplay
+    const tryPlay = () => {
+      audio.play().catch(() => {
+        console.log("Autoplay blocked — waiting for user interaction");
+      });
     };
 
-    // Try autoplay immediately
-    playAudio();
+    tryPlay();
 
-    // Add click listener for fallback
-    const handleUserInteraction = () => playAudio();
-    window.addEventListener("click", handleUserInteraction, { once: true });
+    // User gesture unlock
+    const unlock = () => {
+      tryPlay();
+      window.removeEventListener("click", unlock);
+      window.removeEventListener("touchstart", unlock);
+    };
+
+    window.addEventListener("click", unlock);
+    window.addEventListener("touchstart", unlock);
 
     return () => {
-      window.removeEventListener("click", handleUserInteraction);
+      window.removeEventListener("click", unlock);
+      window.removeEventListener("touchstart", unlock);
     };
-  }, [volume]);
+  }, [volume, src]);
 
-  return <audio ref={audioRef} src={src} loop />;
+  return <audio ref={internalRef} src={src} preload="auto" loop />;
 });
 
 export default BackgroundMusic;
